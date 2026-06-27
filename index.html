@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>近かつメディカルオンライン 乗組員登録</title>
+
+  <!-- LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
 </head>
+
 <body style="font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto;">
 
   <h2>近かつメディカルオンライン</h2>
@@ -72,6 +77,26 @@
   </button>
 
   <script>
+
+    let userId = "";
+
+    window.onload = async function () {
+      try {
+        await liff.init({
+          liffId: "2010528409-I9iUGLH5"
+        });
+
+        if (liff.isLoggedIn()) {
+          const profile = await liff.getProfile();
+          userId = profile.userId;
+
+          console.log("LINEユーザーID:", userId);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     function registerUser() {
       const prefecture = document.getElementById('prefecture').value;
       const shipName = document.getElementById('shipName').value;
@@ -84,9 +109,11 @@
       alert(
         '登録ありがとうございました！\n\n' +
         '所属都道府県：' + prefecture + '\n' +
-        '船名：' + shipName
+        '船名：' + shipName + '\n' +
+        'LINEユーザーID：' + userId
       );
     }
+
   </script>
 
 </body>
