@@ -4,10 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>近かつメディカルオンライン 乗組員登録</title>
-
-  <!-- LIFF SDK -->
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
 </head>
 
 <body style="font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto;">
@@ -71,33 +67,33 @@
   <input type="text" id="shipName" placeholder="例：第○○丸"
          style="width:100%; padding:10px;">
 
-  <button onclick="registerUser()"
+  <button id="registerBtn"
           style="width:100%; padding:15px; margin-top:20px;">
     登録する
   </button>
 
+  <!-- 電話ボタン（最初は非表示） -->
+  <div id="callBtn" style="display:none; margin-top:20px;">
+    <a href="tel:0312345678"
+       style="display:block; text-align:center; padding:15px; background:#00c300; color:white; text-decoration:none;">
+      📞 電話する
+    </a>
+  </div>
+
+  <!-- LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
   <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxBUa8m3q5gk2dJTIeoTCmRKoLbKgigam2LZBJCS9gv57OXObBosetlij0yF0BFtb4/exec";
 
-    let userId = "";
+    // LIFF初期化（←ここは自分のLIFF IDが必要なら追加）
+    async function init() {
+      await liff.init({ liffId: "2010528409-I9iUGLH5" });
+    }
+    init();
 
-    window.onload = async function () {
-      try {
-        await liff.init({
-          liffId: "2010528409-I9iUGLH5"
-        });
+    document.getElementById("registerBtn").addEventListener("click", async () => {
 
-        if (liff.isLoggedIn()) {
-          const profile = await liff.getProfile();
-          userId = profile.userId;
-
-          console.log("LINEユーザーID:", userId);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    function registerUser() {
       const prefecture = document.getElementById('prefecture').value;
       const shipName = document.getElementById('shipName').value;
 
@@ -106,13 +102,30 @@
         return;
       }
 
-      alert(
-        '登録ありがとうございました！\n\n' +
-        '所属都道府県：' + prefecture + '\n' +
-        '船名：' + shipName + '\n' +
-        'LINEユーザーID：' + userId
-      );
-    }
+      // LINEユーザー情報取得
+      const profile = await liff.getProfile();
+      const userId = profile.userId;
+
+      // GASへ送信（保存）
+      await fetch(GAS_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          userId: userId,
+          prefecture: prefecture,
+          shipName: shipName
+        })
+      });
+
+      // 即UI切替（ここが「登録済み表示」）
+      document.getElementById("registerBtn").style.display = "none";
+      document.getElementById("callBtn").style.display = "block";
+
+      alert("登録が完了しました！");
+
+    });
 
   </script>
 
