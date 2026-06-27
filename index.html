@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>近かつメディカルオンライン 乗組員登録</title>
+</head>
+<body style="font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto;">
+
+  <h2>近かつメディカルオンライン</h2>
+  <h3>乗組員登録</h3>
+
+  <p>所属都道府県</p>
+  <select id="prefecture" style="width:100%; padding:10px;">
+    <option value="">選択してください</option>
+    <option>北海道</option>
+    <option>青森県</option>
+    <option>岩手県</option>
+    <option>宮城県</option>
+    <option>秋田県</option>
+    <option>山形県</option>
+    <option>福島県</option>
+    <option>茨城県</option>
+    <option>栃木県</option>
+    <option>群馬県</option>
+    <option>埼玉県</option>
+    <option>千葉県</option>
+    <option>東京都</option>
+    <option>神奈川県</option>
+    <option>新潟県</option>
+    <option>富山県</option>
+    <option>石川県</option>
+    <option>福井県</option>
+    <option>山梨県</option>
+    <option>長野県</option>
+    <option>岐阜県</option>
+    <option>静岡県</option>
+    <option>愛知県</option>
+    <option>三重県</option>
+    <option>滋賀県</option>
+    <option>京都府</option>
+    <option>大阪府</option>
+    <option>兵庫県</option>
+    <option>奈良県</option>
+    <option>和歌山県</option>
+    <option>鳥取県</option>
+    <option>島根県</option>
+    <option>岡山県</option>
+    <option>広島県</option>
+    <option>山口県</option>
+    <option>徳島県</option>
+    <option>香川県</option>
+    <option>愛媛県</option>
+    <option>高知県</option>
+    <option>福岡県</option>
+    <option>佐賀県</option>
+    <option>長崎県</option>
+    <option>熊本県</option>
+    <option>大分県</option>
+    <option>宮崎県</option>
+    <option>鹿児島県</option>
+    <option>沖縄県</option>
+  </select>
+
+  <p style="margin-top:20px;">船名</p>
+  <input type="text" id="shipName" placeholder="例：第○○丸"
+         style="width:100%; padding:10px;">
+
+  <button onclick="registerUser()"
+          style="width:100%; padding:15px; margin-top:20px;">
+    登録する
+  </button>
+
+  <script>
+    function registerUser() {
+      const prefecture = document.getElementById('prefecture').value;
+      const shipName = document.getElementById('shipName').value;
+
+      if (!prefecture || !shipName) {
+        alert('所属都道府県と船名を入力してください。');
+        return;
+      }
+
+      alert(
+        '登録ありがとうございました！\n\n' +
+        '所属都道府県：' + prefecture + '\n' +
+        '船名：' + shipName
+      );
+    }
+  </script>
+
+</body>
+</html>
