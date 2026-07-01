@@ -1,64 +1,145 @@
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>近かつメディカルオンライン 乗組員登録</title>
+</head>
 
-<script>
+<body style="font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto;">
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxBUa8m3q5gk2dJTIeoTCmRKoLbKgigam2LZBJCS9gv57OXObBosetlij0yF0BFtb4/exec";
+  <h2>近かつメディカルオンライン</h2>
+  <h3>乗組員登録</h3>
 
-async function init() {
-  await liff.init({
-    liffId: "2010528409-I9iUGLH5"
-  });
-}
+  <p>所属都道府県</p>
+  <select id="prefecture" style="width:100%; padding:10px;">
+    <option value="">選択してください</option>
+    <option>北海道</option>
+    <option>青森県</option>
+    <option>岩手県</option>
+    <option>宮城県</option>
+    <option>秋田県</option>
+    <option>山形県</option>
+    <option>福島県</option>
+    <option>茨城県</option>
+    <option>栃木県</option>
+    <option>群馬県</option>
+    <option>埼玉県</option>
+    <option>千葉県</option>
+    <option>東京都</option>
+    <option>神奈川県</option>
+    <option>新潟県</option>
+    <option>富山県</option>
+    <option>石川県</option>
+    <option>福井県</option>
+    <option>山梨県</option>
+    <option>長野県</option>
+    <option>岐阜県</option>
+    <option>静岡県</option>
+    <option>愛知県</option>
+    <option>三重県</option>
+    <option>滋賀県</option>
+    <option>京都府</option>
+    <option>大阪府</option>
+    <option>兵庫県</option>
+    <option>奈良県</option>
+    <option>和歌山県</option>
+    <option>鳥取県</option>
+    <option>島根県</option>
+    <option>岡山県</option>
+    <option>広島県</option>
+    <option>山口県</option>
+    <option>徳島県</option>
+    <option>香川県</option>
+    <option>愛媛県</option>
+    <option>高知県</option>
+    <option>福岡県</option>
+    <option>佐賀県</option>
+    <option>長崎県</option>
+    <option>熊本県</option>
+    <option>大分県</option>
+    <option>宮崎県</option>
+    <option>鹿児島県</option>
+    <option>沖縄県</option>
+  </select>
 
-init();
+  <p style="margin-top:20px;">船名</p>
+  <input type="text" id="shipName" placeholder="例：第○○丸"
+         style="width:100%; padding:10px;">
 
-document.getElementById("registerBtn").addEventListener("click", async () => {
+  <button id="registerBtn"
+          style="width:100%; padding:15px; margin-top:20px;">
+    登録する
+  </button>
 
-  alert("①登録ボタンが押されました");
+  <div id="callBtn" style="display:none; margin-top:20px;">
+    <a href="tel:0312345678"
+       style="display:block; text-align:center; padding:15px; background:#00c300; color:white; text-decoration:none;">
+      📞 電話する
+    </a>
+  </div>
 
-  const prefecture = document.getElementById("prefecture").value;
-  const shipName = document.getElementById("shipName").value;
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-  if (!prefecture || !shipName) {
-    alert("所属都道府県と船名を入力してください。");
-    return;
-  }
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxBUa8m3q5gk2dJTIeoTCmRKoLbKgigam2LZBJCS9gv57OXObBosetlij0yF0BFtb4/exec";
 
-  try {
+    async function init() {
+      await liff.init({
+        liffId: "2010528409-I9iUGLH5"
+      });
+    }
 
-    alert("②入力チェック完了");
+    init();
 
-    const profile = await liff.getProfile();
+    document.getElementById("registerBtn").addEventListener("click", async () => {
 
-    alert("③プロフィール取得成功");
+      alert("① 登録ボタンが押されました");
 
-    const userId = profile.userId;
+      const prefecture = document.getElementById("prefecture").value;
+      const shipName = document.getElementById("shipName").value;
 
-    await fetch(GAS_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userId: userId,
-        prefecture: prefecture,
-        shipName: shipName
-      })
+      if (!prefecture || !shipName) {
+        alert("所属都道府県と船名を入力してください。");
+        return;
+      }
+
+      try {
+
+        alert("② 入力チェック完了");
+
+        const profile = await liff.getProfile();
+
+        alert("③ LINEプロフィール取得成功");
+
+        const userId = profile.userId;
+
+        await fetch(GAS_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: userId,
+            prefecture: prefecture,
+            shipName: shipName
+          })
+        });
+
+        alert("④ Googleへ送信成功");
+
+        document.getElementById("registerBtn").style.display = "none";
+        document.getElementById("callBtn").style.display = "block";
+
+        alert("⑤ 登録完了しました");
+
+      } catch(error) {
+        alert("エラー発生：" + error);
+      }
+
     });
 
-    alert("④GAS送信成功");
+  </script>
 
-    document.getElementById("registerBtn").style.display = "none";
-    document.getElementById("callBtn").style.display = "block";
-
-    alert("⑤登録完了しました");
-
-  } catch(error) {
-
-    alert("エラー発生: " + error);
-
-  }
-
-});
-
-</script>
+</body>
+</html>
