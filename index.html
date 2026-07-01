@@ -64,7 +64,8 @@
   </select>
 
   <p style="margin-top:20px;">船名</p>
-  <input type="text" id="shipName" placeholder="例：第○○丸"
+  <input type="text" id="shipName"
+         placeholder="例：第○○丸"
          style="width:100%; padding:10px;">
 
   <button id="registerBtn"
@@ -82,7 +83,7 @@
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxBUa8m3q5gk2dJTIeoTCmRKoLbKgigam2LZBJCS9gv57OXObBosetlij0yF0BFtb4/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbw-dqbjrcE3YVEKa4tVjU1hVvNfM9Z-A5xE3oL0LTEaUuCC_rAvuWwvO70IHPCL6qiD/exec";
 
     async function init() {
       await liff.init({
@@ -114,11 +115,8 @@
 
         const userId = profile.userId;
 
-        await fetch(GAS_URL, {
+        const response = await fetch(GAS_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
           body: JSON.stringify({
             userId: userId,
             prefecture: prefecture,
@@ -134,7 +132,7 @@
         alert("⑤ 登録完了しました");
 
       } catch(error) {
-        alert("エラー発生：" + error);
+        alert("エラー発生: " + error.message);
       }
 
     });
